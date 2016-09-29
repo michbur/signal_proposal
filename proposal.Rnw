@@ -7,6 +7,8 @@
 \usepackage{array,booktabs,tabularx}
 \usepackage{epstopdf}
 \usepackage{colortbl, xcolor}
+\usepackage{tabularx}
+\usepackage{multirow}
 
 \title{Prediction of malarial signal peptides using signalHsmm}
 \author{Micha\l{} Burdukiewicz}
@@ -15,6 +17,9 @@
 
 \maketitle
 \section{Introduction}
+
+% https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2588515/
+% https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2408606/
 
 <<knitrIntro, echo = FALSE, message=FALSE,warning=FALSE>>=
 source("my_ggplot_theme.R")
@@ -63,7 +68,7 @@ plot_pca <- function(x)
   stat_density2d(aes(fill=both,alpha=..level..), color = "black", contour = TRUE, geom="polygon") +
   scale_linetype_discrete("") +
   scale_fill_manual("", values = c("dodgerblue1", "firebrick1"), 
-                    labels = c("Other eukaryotes", "Plasmodium sp.")) +
+                    labels = c("Other eukaryotes", "Plasmodiidae")) +
   scale_shape_discrete("") +
   scale_color_discrete("") +
   scale_x_continuous("Principal Component 1\n") +
@@ -78,16 +83,53 @@ leg <- g_legend(p1)
 @
 
 Medically significant \textit{Plasmodiidae} have unique composition of signal peptides 
-caused
+
 
 Heavy adenine-thymine bias of malarial genomes alters amino acid composition of malarial signal peptides making them hard to predict using software trained on other eukaryotes.
 
-<<echo = FALSE,message=FALSE,results='asis',fig.width=14, fig.height=8>>=
-print(p1)
+\begin{figure}
+<<echo = FALSE,message=FALSE,results='asis',fig.width=14, fig.height=13>>=
+grid.arrange(textGrob("A", x = 0.75, y = 0.9, gp=gpar(fontsize=32)), 
+             p1 + guides(fill = FALSE) + ggtitle("Full alphabet"), 
+             textGrob("B", x = 0.75, y = 0.9, gp=gpar(fontsize=32)),
+             p2 + guides(fill = FALSE) + ggtitle("Reduced alphabet") , 
+             rectGrob(x = unit(0.5, "npc"), y = unit(0.5, "npc"), gp = gpar(col = "white")), leg, 
+             nrow = 3, heights = c(0.48, 0.48, 0.04), widths = c(0.04, 0.96))
 @ 
+\caption{Principal component analysis of amino acid frequency in signal peptides belonging to \textit{Plasmodiidae} and other eukaryotes. A) Frequency of amino acids. B) Frequency of amino acids encoded using the reduced alphabet.}
+\end{figure}
+
 
 \section{Reduced alphabet}
 
-\section{HSMM model}
+\section{Benchmark}
+
+\small
+\begin{table}[ht]
+\centering
+%\begin{tabularx}{\textwidth}{@{} Xccc @{}}
+\begin{tabularx}{\textwidth}{Xlccc}
+
+  \toprule
+ & Sensitivity & Specificity & MCC & AUC \\ 
+  \midrule
+signalP 4.1 (no tm) \newline \citep{petersen_signalp_2011} & 0.8235 & 0.9100 & 0.6872 & 0.8667 \\ 
+   \rowcolor[gray]{0.85}signalP 4.1 (tm) \newline \citep{petersen_signalp_2011} & 0.6471 & 0.9431 & 0.6196 & 0.7951 \\ 
+  signalP 3.0 (NN) \newline \citep{DyrlovBendtsen2004783} & 0.8824 & 0.9052 & 0.7220 & 0.8938 \\ 
+   \rowcolor[gray]{0.85}signalP 3.0 (HMM) \newline \citep{DyrlovBendtsen2004783} & 0.6275 & 0.9194 & 0.5553 & 0.7734 \\ 
+  PrediSi \newline \citep{hiller_predisi:_2004} & 0.3333 & \textbf{0.9573} & 0.3849 & 0.6453 \\ 
+   \rowcolor[gray]{0.85}Philius \newline \citep{reynolds_transmembrane_2008} & 0.6078 & 0.9336 & 0.5684 & 0.7707 \\ 
+  Phobius \newline \citep{kall_combined_2004} & 0.6471 & 0.9289 & 0.5895 & 0.7880 \\ 
+   \hline
+   \hline
+   \rowcolor[gray]{0.85}signalHsmm-2010 & 0.9804 & 0.8720 & 0.7409 & 0.9262 \\ 
+  signalHsmm-2010 \newline (hom. 50\%) & \textbf{1.0000} & 0.8768 & \textbf{0.7621} & \textbf{0.9384} \\ 
+   \rowcolor[gray]{0.85}signalHsmm-2010 (raw aa) & 0.8431 & 0.9005 & 0.6853 & 0.8718 \\ 
+   \bottomrule
+\end{tabularx}
+\end{table}
+
+\bibliographystyle{apalike}
+\bibliography{signalhsmm_poster}
 
 \end{document}
