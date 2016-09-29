@@ -1,0 +1,93 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{natbib}
+\usepackage{graphicx}
+\usepackage{array,booktabs,tabularx}
+\usepackage{epstopdf}
+\usepackage{colortbl, xcolor}
+
+\title{Prediction of malarial signal peptides using signalHsmm}
+\author{Micha\l{} Burdukiewicz}
+
+\begin{document}
+
+\maketitle
+\section{Introduction}
+
+<<knitrIntro, echo = FALSE, message=FALSE,warning=FALSE>>=
+source("my_ggplot_theme.R")
+
+g_legend<-function(a.gplot){
+  tmp <- ggplot_gtable(ggplot_build(a.gplot))
+  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+  legend <- tmp$grobs[[leg]]
+  return(legend)}
+
+library(dplyr)
+library(reshape2)
+library(xtable)
+library(biogram)
+
+load("./dat/signalhsmm_poster.RData")
+
+freq_nondeg <- read.csv2("./dat/freq_nondeg.csv")[, -1]
+freq_deg <- read.csv2("./dat/freq_deg.csv")[, -1]
+
+do_pca <- function(x) 
+  x %>% 
+  select(-type, -taxon) %>% 
+  prcomp(center = TRUE, scale = TRUE) %>% 
+  getElement("x") %>% 
+  data.frame() %>% 
+  select(1, 2) %>% 
+  cbind(select(x, type, taxon), .) %>% 
+  mutate(type_nice = factor(type, labels = c("Mature peptide", "Signal peptide")),
+         taxon_nice = factor(taxon, labels = c("other eukaryotes", "Plasmodium"))) %>% 
+  mutate(both = paste0(type_nice, "\n(", taxon_nice, ")\n")) %>% 
+  filter(type_nice == "Signal peptide")
+
+dat_deg <- do_pca(freq_deg) 
+dat_nondeg <- do_pca(freq_nondeg)
+
+# dat_deg <- read.table("PCAgr.txt", header = TRUE, sep = "\t")
+# dat_nondeg <- read.table("PCA.txt", header = TRUE, sep = "\t")
+# colnames(dat_deg) <- c("both", "PC1", "PC2")
+# colnames(dat_nondeg) <- c("both", "PC1", "PC2")
+
+plot_pca <- function(x)
+  ggplot(x, aes(x = PC1, y = PC2, fill = both)) + 
+  geom_density_2d(color = "black", contour = TRUE) +
+  #geom_point() +
+  stat_density2d(aes(fill=both,alpha=..level..), color = "black", contour = TRUE, geom="polygon") +
+  scale_linetype_discrete("") +
+  scale_fill_manual("", values = c("dodgerblue1", "firebrick1"), 
+                    labels = c("Other eukaryotes", "Plasmodium sp.")) +
+  scale_shape_discrete("") +
+  scale_color_discrete("") +
+  scale_x_continuous("Principal Component 1\n") +
+  scale_y_continuous("Principal Component 2") +
+  scale_alpha_continuous(range = c(0.25, 0.4)) +
+  guides(alpha = FALSE) +
+  my_theme
+
+p1 <- plot_pca(dat_nondeg) 
+p2 <- plot_pca(dat_deg)
+leg <- g_legend(p1)
+@
+
+Medically significant \textit{Plasmodiidae} have unique composition of signal peptides 
+caused
+
+Heavy adenine-thymine bias of malarial genomes alters amino acid composition of malarial signal peptides making them hard to predict using software trained on other eukaryotes.
+
+<<echo = FALSE,message=FALSE,results='asis',fig.width=14, fig.height=8>>=
+print(p1)
+@ 
+
+\section{Reduced alphabet}
+
+\section{HSMM model}
+
+\end{document}
