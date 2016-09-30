@@ -82,10 +82,11 @@ p2 <- plot_pca(dat_deg)
 leg <- g_legend(p1)
 @
 
-Medically significant \textit{Plasmodiidae} have unique composition of signal peptides 
+Heavy adenine-thymine bias of malarial genomes alters amino acid composition of malarial proteins, including signal peptides. Simple PCA analysis of amino acid frequency shows that signal peptides of \textit{Plasmodiidae} do not group with signal peptides of other eukaryotes (Figure \ref{fig:PCA}A).
 
+%signal peptides making them hard to predict using software trained on other eukaryotes.
 
-Heavy adenine-thymine bias of malarial genomes alters amino acid composition of malarial signal peptides making them hard to predict using software trained on other eukaryotes.
+%Medically significant have unique composition of signal peptides 
 
 \begin{figure}
 <<echo = FALSE,message=FALSE,results='asis',fig.width=14, fig.height=13>>=
@@ -97,13 +98,16 @@ grid.arrange(textGrob("A", x = 0.75, y = 0.9, gp=gpar(fontsize=32)),
              nrow = 3, heights = c(0.48, 0.48, 0.04), widths = c(0.04, 0.96))
 @ 
 \caption{Principal component analysis of amino acid frequency in signal peptides belonging to \textit{Plasmodiidae} and other eukaryotes. A) Frequency of amino acids. B) Frequency of amino acids encoded using the reduced alphabet.}
+\label{fig:PCA}
 \end{figure}
-
 
 \section{Reduced alphabet}
 
+We generated 96 reduced amino acid alphabets using combination of physicochemical properties relevant to signal peptide architecture (charge, polarity, hydrophobicity). To find if reduced amino acid alphabets create more general model of signal peptides, we build a signal peptide predictor signalHsmm for each alphabet. We computed frequencies of amino acids from a reduced amino acid alphabet and used them to train a hidden semi-Markov model of signal peptides.
+
 \begin{table}[ht]
 \centering
+\caption{The best performing reduced amino acid alphabet.}
 \begin{tabular}{ll}
   \toprule
 Group & Amino acids \\ 
@@ -118,9 +122,16 @@ I & D, E, H, K, N, Q, R \\
 
 \section{Benchmark}
 
+To create benchmark data set of atypical signal peptides, we extracted proteins with signal peptide belonging to members of \textit{Plasmodiidae} (after  51 proteins). As negative data set we used proteins without signal peptide from the same taxon (211 proteins after 50\% homology reduction).
+
+Predictor: \textit{signalHsmm}-2010, hidden semi-Markov model trained on data set of 3,676 eukaryotic proteins with signal peptides added before year 2010 encoded using the best sensitivity reduced alphabet.
+
+
 \small
 \begin{table}[ht]
 \centering
+\caption{Results of benchmark. Full alphabet: no amino alphabet reduction. hom. 50\%: 50\% homology reduction in the learning data set.
+}
 %\begin{tabularx}{\textwidth}{@{} Xccc @{}}
 \begin{tabularx}{\textwidth}{Xlccc}
 
@@ -142,6 +153,21 @@ signalP 4.1 (no tm) \newline \citep{petersen_signalp_2011} & 0.8235 & 0.9100 & 0
    \bottomrule
 \end{tabularx}
 \end{table}
+
+\section{Workplan}
+
+Aim: improve performance of signalP for atypical signal peptides using a reduced amino acid alphabet.
+
+\begin{enumerate}
+\item Adjust signalP 4.1 for reduced alphabets. I don't have an access to signalP 4.1 source code, but it is possible, that it has hardcoded alphabet of 20 amino acids, so a bit of programming might be necessary.
+%\item Generate reduced amino acid alphabets using physicochemical properties appropriate for signal peptides.
+%\item Through cross-validation experiment identify the reduced alphabet that maximizes performance measures for sets of unique signal peptides.
+\item Benchmark modified signalP 4.1 on external data set of atypical signal peptides and compare with normal signalP 4.1 and signalP 3.0.
+\end{enumerate}
+
+\section{Concerns}
+
+It is possible that reduction of the alphabet may improve the general performance of signal peptide prediction, but lower accuracy of cleavage sites prediction. Cleavage sites seem to require more defined motifs than whole signal peptide and may need larger alphabets, possibly even the full amino acid alphabet.
 
 \bibliographystyle{apalike}
 \bibliography{signalhsmm_poster}
