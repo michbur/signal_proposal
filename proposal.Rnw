@@ -102,6 +102,20 @@ grid.arrange(textGrob("A", x = 0.75, y = 0.9, gp=gpar(fontsize=32)),
 
 \section{Reduced alphabet}
 
+\begin{table}[ht]
+\centering
+\begin{tabular}{ll}
+  \toprule
+Group & Amino acids \\ 
+  \midrule
+I & D, E, H, K, N, Q, R \\ 
+   \rowcolor[gray]{0.85}II & G, P, S, T, Y \\ 
+  III & F, I, L, M, V, W \\ 
+   \rowcolor[gray]{0.85} IV & A, C \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+
 \section{Benchmark}
 
 \small
