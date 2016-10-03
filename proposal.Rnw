@@ -103,7 +103,9 @@ grid.arrange(textGrob("A", x = 0.75, y = 0.9, gp=gpar(fontsize=32)),
 
 \section{Reduced alphabet}
 
-We generated 96 reduced amino acid alphabets using combination of physicochemical properties relevant to signal peptide architecture (charge, polarity, hydrophobicity). To find if reduced amino acid alphabets create more general model of signal peptides, we build a signal peptide predictor signalHsmm for each alphabet. We computed frequencies of amino acids from a reduced amino acid alphabet and used them to train a hidden semi-Markov model of signal peptides.
+We generated 96 reduced amino acid alphabets using combination of physicochemical properties relevant to signal peptide architecture (charge, polarity, hydrophobicity). To assess if reduced amino acid alphabets create more general model of signal peptides, we build a signal peptide predictor (based on hidden semi-Markov models) separately for each alphabet. In a cross-validation experiment (using only eukaryotic proteins) we find a reduced amino acid alphabet providing the best sensitivity (and second best AUC)~(Table~\ref{tab:best_enc}). 
+
+It is important to note, that reduced amino acid alphabet groups together signal peptides belonging to \textit{Plasmodiidae} and other eukaryotes (Figure \ref{fig:PCA}A).
 
 \begin{table}[ht]
 \centering
@@ -118,14 +120,14 @@ I & D, E, H, K, N, Q, R \\
    \rowcolor[gray]{0.85} IV & A, C \\ 
    \bottomrule
 \end{tabular}
+\label{tab:best_enc}
 \end{table}
 
 \section{Benchmark}
 
-To create benchmark data set of atypical signal peptides, we extracted proteins with signal peptide belonging to members of \textit{Plasmodiidae} (after  51 proteins). As negative data set we used proteins without signal peptide from the same taxon (211 proteins after 50\% homology reduction).
+To create benchmark data set, we extracted proteins with signal peptide belonging to members of \textit{Plasmodiidae} (51 proteins after 50\% homology reduction). As negative data set we used proteins without signal peptide from the same taxon (211 proteins after 50\% homology reduction).
 
-Predictor: \textit{signalHsmm}-2010, hidden semi-Markov model trained on data set of 3,676 eukaryotic proteins with signal peptides added before year 2010 encoded using the best sensitivity reduced alphabet.
-
+As predictor we used \textit{signalHsmm}-2010, hidden semi-Markov model trained on data set of 3,676 eukaryotic proteins with signal peptides added before year 2010 and encoded using the best sensitivity reduced alphabet. signalHsmm was compared to other predictors of signal peptides. As a negative control, we also benchmarked an iteration of signalHsmm that does not employ reduced amino acid alphabet.
 
 \small
 \begin{table}[ht]
@@ -148,8 +150,7 @@ signalP 4.1 (no tm) \newline \citep{petersen_signalp_2011} & 0.8235 & 0.9100 & 0
    \hline
    \hline
    \rowcolor[gray]{0.85}signalHsmm-2010 & 0.9804 & 0.8720 & 0.7409 & 0.9262 \\ 
-  signalHsmm-2010 \newline (hom. 50\%) & \textbf{1.0000} & 0.8768 & \textbf{0.7621} & \textbf{0.9384} \\ 
-   \rowcolor[gray]{0.85}signalHsmm-2010 (raw aa) & 0.8431 & 0.9005 & 0.6853 & 0.8718 \\ 
+   signalHsmm-2010 (full alphabet) & 0.8431 & 0.9005 & 0.6853 & 0.8718 \\ 
    \bottomrule
 \end{tabularx}
 \end{table}
@@ -162,7 +163,7 @@ Aim: improve performance of signalP for atypical signal peptides using a reduced
 \item Adjust signalP 4.1 for reduced alphabets. I don't have an access to signalP 4.1 source code, but it is possible, that it has hardcoded alphabet of 20 amino acids, so a bit of programming might be necessary.
 %\item Generate reduced amino acid alphabets using physicochemical properties appropriate for signal peptides.
 %\item Through cross-validation experiment identify the reduced alphabet that maximizes performance measures for sets of unique signal peptides.
-\item Benchmark modified signalP 4.1 on external data set of atypical signal peptides and compare with normal signalP 4.1 and signalP 3.0.
+\item Benchmark modified signalP 4.1 on external data set(s) of atypical signal peptides and compare with normal signalP 4.1 and signalP 3.0.
 \end{enumerate}
 
 \section{Concerns}
