@@ -84,6 +84,8 @@ leg <- g_legend(p1)
 
 Heavy adenine-thymine bias of malarial genomes alters amino acid composition of malarial proteins, including signal peptides. Simple PCA analysis of amino acid frequency shows that signal peptides of \textit{Plasmodiidae} do not group with signal peptides of other eukaryotes (Figure \ref{fig:PCA}A).
 
+The function of signal peptides enforces presence of amino acids with well defined physicochemical properties. Therefore, the difference between signal peptides of \textit{Plasmodiidae} and other eukaryotes should disappear when we use reduced amino acid alphabet aggregating together residues with similar properties.
+
 %signal peptides making them hard to predict using software trained on other eukaryotes.
 
 %Medically significant have unique composition of signal peptides 
@@ -129,10 +131,11 @@ To create benchmark data set, we extracted proteins with signal peptide belongin
 
 As predictor we used \textit{signalHsmm}-2010, hidden semi-Markov model trained on data set of 3,676 eukaryotic proteins with signal peptides added before year 2010 and encoded using the best sensitivity reduced alphabet. signalHsmm was compared to other predictors of signal peptides. As a negative control, we also benchmarked an iteration of signalHsmm that does not employ reduced amino acid alphabet.
 
-\small
+
 \begin{table}[ht]
+\small
 \centering
-\caption{Results of benchmark. Full alphabet: no amino alphabet reduction. hom. 50\%: 50\% homology reduction in the learning data set.
+\caption{Results of benchmark. Full alphabet: no amino alphabet reduction.
 }
 %\begin{tabularx}{\textwidth}{@{} Xccc @{}}
 \begin{tabularx}{\textwidth}{Xlccc}
@@ -149,7 +152,7 @@ signalP 4.1 (no tm) \newline \citep{petersen_signalp_2011} & 0.8235 & 0.9100 & 0
   Phobius \newline \citep{kall_combined_2004} & 0.6471 & 0.9289 & 0.5895 & 0.7880 \\ 
    \hline
    \hline
-   \rowcolor[gray]{0.85}signalHsmm-2010 & 0.9804 & 0.8720 & 0.7409 & 0.9262 \\ 
+   \rowcolor[gray]{0.85}signalHsmm-2010 & \textbf{0.9804} & 0.8720 & \textbf{0.7409} & \textbf{0.9262} \\ 
    signalHsmm-2010 (full alphabet) & 0.8431 & 0.9005 & 0.6853 & 0.8718 \\ 
    \bottomrule
 \end{tabularx}
@@ -157,7 +160,10 @@ signalP 4.1 (no tm) \newline \citep{petersen_signalp_2011} & 0.8235 & 0.9100 & 0
 
 \section{Workplan}
 
+
 Aim: improve performance of signalP for atypical signal peptides using a reduced amino acid alphabet.
+
+Since signalP 5 is not yet available, I want to instead use signalP 4.1.
 
 \begin{enumerate}
 \item Adjust signalP 4.1 for reduced alphabets. I don't have an access to signalP 4.1 source code, but it is possible, that it has hardcoded alphabet of 20 amino acids, so a bit of programming might be necessary.
@@ -165,6 +171,8 @@ Aim: improve performance of signalP for atypical signal peptides using a reduced
 %\item Through cross-validation experiment identify the reduced alphabet that maximizes performance measures for sets of unique signal peptides.
 \item Benchmark modified signalP 4.1 on external data set(s) of atypical signal peptides and compare with normal signalP 4.1 and signalP 3.0.
 \end{enumerate}
+
+If modified signalP 4.1 is as accurate as it was during benchmark on proteins belonging to other eukaryotes and it predicts atypical signal peptides better, it gives us a rationale to use reduced alphabets and justifies further search for more optimized reduced amino acid alphabet.
 
 \section{Concerns}
 
