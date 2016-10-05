@@ -109,6 +109,8 @@ We generated 96 reduced amino acid alphabets using combination of physicochemica
 
 It is important to note, that reduced amino acid alphabet groups together signal peptides belonging to \textit{Plasmodiidae} and other eukaryotes (Figure \ref{fig:PCA}A).
 
+Hidden semi-Markov model is a variation of Markov model used for example in signalP 2.0 and 3.0. We strayed from the pure Markov model, when we find that distributions of regional length is not exponential as implied by the Markov framework. Hidden semi-Markov algorithm allowed us to more precisely model regional structure of signal peptide offering an advantage over HMM implementations.
+
 \begin{table}[ht]
 \centering
 \caption{The best performing reduced amino acid alphabet.}
