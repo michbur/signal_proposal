@@ -1,0 +1,31 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+
+\title{Proposal for research stay}
+\author{Micha\l{} Burdukiewicz}
+
+\begin{document}
+
+\maketitle
+\section{Workplan}
+
+
+Aim: improve performance of signalP for atypical signal peptides using a reduced amino acid alphabet.
+
+Since signalP 5 is not yet available, I want to instead use signalP 4.1.
+
+\begin{enumerate}
+\item Adjust signalP 4.1 for reduced alphabets. I don't have an access to signalP 4.1 source code, but it is possible, that it has hardcoded alphabet of 20 amino acids, so a bit of programming might be necessary.
+%\item Generate reduced amino acid alphabets using physicochemical properties appropriate for signal peptides.
+%\item Through cross-validation experiment identify the reduced alphabet that maximizes performance measures for sets of unique signal peptides.
+\item Benchmark modified signalP 4.1 on external data set(s) of atypical signal peptides and compare with normal signalP 4.1 and signalP 3.0.
+\end{enumerate}
+
+If modified signalP 4.1 is as accurate as it was during benchmark on proteins belonging to other eukaryotes and it predicts atypical signal peptides better, it gives us a rationale to use reduced alphabets and justifies further search for more optimized reduced amino acid alphabet.
+
+\section{Concerns}
+
+It is possible that reduction of the alphabet may improve the general performance of signal peptide prediction, but lower accuracy of cleavage sites prediction. Cleavage sites seem to require more defined motifs than whole signal peptide and may need larger alphabets, possibly even the full amino acid alphabet.
+
+\end{document}
