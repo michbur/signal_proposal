@@ -82,7 +82,7 @@ p2 <- plot_pca(dat_deg)
 leg <- g_legend(p1)
 @
 
-Heavy adenine-thymine bias of malarial genomes alters amino acid composition of malarial proteins, including signal peptides. Simple PCA analysis of amino acid frequency shows that signal peptides of \textit{Plasmodiidae} do not group with signal peptides of other eukaryotes (Figure \ref{fig:PCA}A).
+Heavy adenine-thymine bias of malarial genomes alters amino acid composition of malarial proteins, including signal peptides~\citep{paila_genome_2008}. Simple PCA analysis of amino acid frequency shows that signal peptides of \textit{Plasmodiidae} do not group with signal peptides of other eukaryotes (Figure \ref{fig:PCA}A).
 
 The function of signal peptides enforces presence of amino acids with well defined physicochemical properties. Therefore, the difference between signal peptides of \textit{Plasmodiidae} and other eukaryotes should disappear when we use reduced amino acid alphabet aggregating together residues with similar properties.
 
@@ -90,7 +90,7 @@ The function of signal peptides enforces presence of amino acids with well defin
 
 %Medically significant have unique composition of signal peptides 
 
-\begin{figure}
+\begin{figure}[ht]
 <<echo = FALSE,message=FALSE,results='asis',fig.width=14, fig.height=13>>=
 grid.arrange(textGrob("A", x = 0.75, y = 0.9, gp=gpar(fontsize=32)), 
              p1 + guides(fill = FALSE) + ggtitle("Full alphabet"), 
@@ -105,11 +105,9 @@ grid.arrange(textGrob("A", x = 0.75, y = 0.9, gp=gpar(fontsize=32)),
 
 \section{Reduced alphabet}
 
-We generated 96 reduced amino acid alphabets using combination of physicochemical properties relevant to signal peptide architecture (charge, polarity, hydrophobicity). To assess if reduced amino acid alphabets create more general model of signal peptides, we build a signal peptide predictor (based on hidden semi-Markov models) separately for each alphabet. In a cross-validation experiment (using only eukaryotic proteins) we find a reduced amino acid alphabet providing the best sensitivity (and second best AUC)~(Table~\ref{tab:best_enc}). 
+In the cross-validation experiment we used only eukarytotic proteins with and without signal peptides. The dataset does not include any protein belonging to \textit{Plasmodiidae} or even \textit{Apicomplexa} taxon.
 
-It is important to note, that reduced amino acid alphabet groups together signal peptides belonging to \textit{Plasmodiidae} and other eukaryotes (Figure \ref{fig:PCA}A).
-
-Hidden semi-Markov model is a variation of Markov model used for example in signalP 2.0 and 3.0. We strayed from the pure Markov model, when we find that distributions of regional length is not exponential as implied by the Markov framework. Hidden semi-Markov algorithm allowed us to more precisely model regional structure of signal peptide offering an advantage over HMM implementations.
+We generated 96 reduced amino acid alphabets using combination of physicochemical properties relevant to signal peptide architecture (charge, polarity, hydrophobicity). To assess if reduced amino acid alphabets create more general model of signal peptides, we build a signal peptide predictor (based on hidden semi-Markov models) separately for each alphabet. In a cross-validation experiment (using only eukaryotic proteins) we find a reduced amino acid alphabet providing the best sensitivity (and second best AUC)~(Table~\ref{tab:best_enc}). The classifier based on the best sensitivity amino acid alphabet outperforms also the HSMM classifier based on the full amino acid alphabet.
 
 \begin{table}[ht]
 \centering
@@ -127,12 +125,13 @@ I & D, E, H, K, N, Q, R \\
 \label{tab:best_enc}
 \end{table}
 
+Hidden semi-Markov model (HSMM) is a variation of Markov model used for example in signalP 2.0 and 3.0. We strayed from the pure Markov model, when we find that distributions of regional length is not exponential as implied by the Markov framework. Hidden semi-Markov algorithm allowed us to more precisely model regional structure of signal peptide offering an advantage over HMM implementations.
+
 \section{Benchmark}
 
-To create benchmark data set, we extracted proteins with signal peptide belonging to members of \textit{Plasmodiidae} (51 proteins after 50\% homology reduction). As negative data set we used proteins without signal peptide from the same taxon (211 proteins after 50\% homology reduction).
+To create benchmark dataset, we extracted proteins with signal peptide belonging to members of \textit{Plasmodiidae} (51 proteins after 50\% homology reduction). As negative dataset we used proteins without signal peptide from the same taxon (211 proteins after 50\% homology reduction).
 
-As predictor we used \textit{signalHsmm}-2010, hidden semi-Markov model trained on data set of 3,676 eukaryotic proteins with signal peptides added before year 2010 and encoded using the best sensitivity reduced alphabet. signalHsmm was compared to other predictors of signal peptides. As a negative control, we also benchmarked an iteration of signalHsmm that does not employ reduced amino acid alphabet.
-
+As predictor we used \textit{signalHsmm}-2010, a hidden semi-Markov model trained on dataset of 3,676 eukaryotic proteins with signal peptides added before year 2010 and encoded using the best sensitivity reduced alphabet. signalHsmm was compared to other predictors of signal peptides. As a negative control, we also benchmarked an iteration of signalHsmm that does not employ reduced amino acid alphabet.
 
 \begin{table}[ht]
 \small
@@ -159,6 +158,12 @@ signalP 4.1 (no tm) \newline \citep{petersen_signalp_2011} & 0.8235 & 0.9100 & 0
    \bottomrule
 \end{tabularx}
 \end{table}
+
+\section{Conclusions}
+
+The usage of reduced amino acid alphabets allows extraction of decision rules flexible enough to successfully predict signal peptides belonging both to \textit{Plasmodiidae} and other eukaryotes. The improvement over best-performing signalP 3.0 is not large (0.026 AUC), but may results from the small number of alphabets analyzed or weakness of HSMM compared to neural networks.
+
+The universality introduced by the usage of reduced amino acid alphabet is best seen in the PCA analysis. The best sensitivity reduced amino acid alphabet groups together signal peptides belonging to \textit{Plasmodiidae} and other eukaryotes (Figure \ref{fig:PCA}B).
 
 \bibliographystyle{apalike}
 \bibliography{signalhsmm_poster}

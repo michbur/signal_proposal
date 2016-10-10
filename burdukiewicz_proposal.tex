@@ -2,7 +2,7 @@
 \usepackage[utf8]{inputenc}
 
 
-\title{Proposal for research stay}
+\title{Research stay workplan}
 \author{Micha\l{} Burdukiewicz}
 
 \begin{document}
@@ -13,16 +13,19 @@
 
 Aim: improve performance of signalP for atypical signal peptides using a reduced amino acid alphabet.
 
-Since signalP 5 is not yet available, I want to instead use signalP 4.1.
+Since signalP 5.0 is not yet available, I want to instead use signalP 4.1. 
 
 \begin{enumerate}
+\item Generate large number of reduced amino acid alphabets. I want to use different physicochemical features that are associated with the unique architecture of signal peptides, for example several measures of hydrophobicity. The final sets of alphabets will be based on around 20 properties and I will build alphabets based on all combination of all sizes of this properties receiving 1,048,575 alphabets. Most of them will be identical, so the real number of unique amino acid alphabets will be lower.
 \item Adjust signalP 4.1 for reduced alphabets. I don't have an access to signalP 4.1 source code, but it is possible, that it has hardcoded alphabet of 20 amino acids, so a bit of programming might be necessary.
 %\item Generate reduced amino acid alphabets using physicochemical properties appropriate for signal peptides.
 %\item Through cross-validation experiment identify the reduced alphabet that maximizes performance measures for sets of unique signal peptides.
-\item Benchmark modified signalP 4.1 on external data set(s) of atypical signal peptides and compare with normal signalP 4.1 and signalP 3.0.
+\item Train new iterations of signalP 4.1 on signalP 4.1 data set, but using sequences written in reduced amino acid alphabets.
+\item Choose the best-performing iterations of signalP 4.1 considering different criteria (mostly AUC and specificity).
+\item Benchmark best-performing iterations of signalP 4.1 on external data set(s) of atypical signal peptides and compare with normal signalP 4.1 and signalP 3.0.
 \end{enumerate}
 
-If modified signalP 4.1 is as accurate as it was during benchmark on proteins belonging to other eukaryotes and it predicts atypical signal peptides better, it gives us a rationale to use reduced alphabets and justifies further search for more optimized reduced amino acid alphabet.
+The analysis presented above is independent of the predictor, so when signalP 5.0 is ready, it may easily replace signalP 4.1.
 
 \section{Concerns}
 
