@@ -3,7 +3,6 @@ output:
   revealjs::revealjs_presentation:
     self_contained: false
     incremental: true
-    css: report.css
     reveal_plugins: ["zoom"]
 ---
 
@@ -22,6 +21,19 @@ library(knitr)
 opts_chunk$set(tidy.opts=list(width.cutoff = 50), tidy=TRUE)
 ```
 
-## Cel
+## Aim
 
 Blabla
+
+
+# Feature encoding
+
+## Orthogonal encoding of amino acids
+
+<img src="static_figure/orthogonality.png">
+
+# Generation of reduced alphabets
+
+## Source of reduced alphabets
+
+<img src="static_figure/feature_encoding.png">
