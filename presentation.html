@@ -58,6 +58,7 @@
 
     <style type="text/css">code{white-space: pre;}</style>
 
+    <link rel="stylesheet" href="report.css"/>
     <!-- Printing and PDF exports -->
     <script>
       var link = document.createElement( 'link' );
@@ -70,6 +71,10 @@
     <script src="presentation_files/reveal.js-3.3.0/lib/js/html5shiv.js"></script>
     <![endif]-->
 
+    <script src="presentation_files/htmlwidgets-0.8/htmlwidgets.js"></script>
+    <link href="presentation_files/plotlyjs-1.16.3/plotly-htmlwidgets.css" rel="stylesheet" />
+    <script src="presentation_files/plotlyjs-1.16.3/plotly-latest.min.js"></script>
+    <script src="presentation_files/plotly-binding-4.5.6/plotly.js"></script>
 </head>
 <body>
   <div class="reveal">
@@ -82,23 +87,261 @@
 Alphabet reduction in signal peptide prediction
 </h1>
 <h2>
-Michal Burdukiewicz
+Michał Burdukiewicz
 <h2>
 <h3>
-25 stycznia 2017
+University of Wrocław
+<h3>
+<h3>
+30-01-2017
 <h3>
 </section>
-<section><section id="alphabet-reduction" class="titleslide slide level1"><h1>Alphabet reduction</h1></section><section id="aim" class="slide level2">
+<section><section id="alphabet-reduction" class="titleslide slide level1"><h1>Alphabet reduction</h1></section><section id="amino-acid-encoding" class="slide level2">
+<h1>Amino acid encoding</h1>
+<ul>
+<li class="fragment">For machine learning algorithms amino acids are usually described as vectors of 20 bits (e.g., alanine is 1000000000000000).</li>
+<li class="fragment">The distance between very similar amino acids (as D and E) is the same as a distance between two very different amino acids (as D and W).</li>
+</ul>
+</section><section id="signal-peptide-structure" class="slide level2">
+<h1>Signal peptide structure</h1>
+<div id="left">
+<p><img src="static_figure/SP.png" width=90%></p>
+</div>
+<div id="right">
+<ul>
+<li class="fragment">The regional structure of signal peptide does not rely on specific residues, but rather on their physicochemical properties.</li>
+<li class="fragment">The only (partial) exception is the cleavage site (the first cleavage site predictor used a reduced amino acid alphabet <span class="citation" data-cites="von_heijne_patterns_1983">(von Heijne 1983)</span>).</li>
+</ul>
+</div>
+</section><section id="aim" class="slide level2">
 <h1>Aim</h1>
-<p>Blabla</p>
+<div id="left">
+<p><img src="static_figure/sample_encoding.svg"></p>
+</div>
+<div id="right">
+<ul>
+<li class="fragment">The reduction of amino acid alphabet is an equivalent of an assignment of amino acid aggregates to larger groups based on chosen properties.</li>
+</ul>
+</div>
+</section><section id="aim-1" class="slide level2">
+<h1>Aim</h1>
+<div id="left">
+<p><img src="static_figure/sample_encoding.svg"></p>
+</div>
+<div id="right">
+<ul>
+<li class="fragment">Remove unnecessary information.</li>
+<li class="fragment">Decrease number of sequences required to train a signal prediction algorithm.</li>
+<li class="fragment">Create more universal decision rules.</li>
+</ul>
+</div>
+</section><section id="universality" class="slide level2">
+<h1>Universality</h1>
+<div id="left">
+<p><img src="presentation_files/figure-revealjs/unnamed-chunk-2-1.png" width="384" /></p>
+</div>
+<div id="right">
+<ul>
+<li class="fragment">Organisms may undergo a global shift in a proteome composition <span class="citation" data-cites="brbic_global_2015">(Brbić et al. 2015)</span>.</li>
+<li class="fragment">Their signal peptides must still have physicochemical properties required for the proper recognition.</li>
+</ul>
+</div>
 </section></section>
-<section><section id="feature-encoding" class="titleslide slide level1"><h1>Feature encoding</h1></section><section id="orthogonal-encoding-of-amino-acids" class="slide level2">
-<h1>Orthogonal encoding of amino acids</h1>
-<p><img src="static_figure/orthogonality.png"></p>
+<section><section id="implement-reduced-alphabet" class="titleslide slide level1"><h1>Implement reduced alphabet</h1></section><section id="orthogonality" class="slide level2">
+<h1>Orthogonality</h1>
+<ul>
+<li class="fragment">Feature encoding is orthogonal towards the classification methods.</li>
+</ul>
+</section><section id="orthogonality-1" class="slide level2">
+<h1>Orthogonality</h1>
+<p><img src="static_figure/orthogonality1.svg"></p>
+</section><section id="orthogonality-2" class="slide level2">
+<h1>Orthogonality</h1>
+<p><img src="static_figure/orthogonality2.svg"></p>
+</section><section id="comparison-of-algorithms" class="slide level2">
+<h1>Comparison of algorithms</h1>
+<ul>
+<li class="fragment">The classification algorithm incorporating a reduced amino acid alphabet should always be compared with its equivalent trained on sequences described in the full alphabet.</li>
+<li class="fragment">The tuning of parameters should be done separately for classifier involving a reduced amino acid alphabet.</li>
+</ul>
 </section></section>
-<section><section id="generation-of-reduced-alphabets" class="titleslide slide level1"><h1>Generation of reduced alphabets</h1></section><section id="source-of-reduced-alphabets" class="slide level2">
+<section><section id="generation-of-reduced-alphabets" class="titleslide slide level1"><h1>Generation of reduced alphabets</h1></section><section id="previous-research" class="slide level2">
+<h1>Previous research</h1>
+<ul>
+<li class="fragment">Prediction of signal peptides was done before and it does not provide any edge over the full alphabet <span class="citation" data-cites="maetschke_blomap:_2005">(Maetschke, Towsey, and Bodén 2005)</span>.</li>
+<li class="fragment">We need reduced alphabets tailored for the signal prediction problem.</li>
+</ul>
+</section><section id="source-of-reduced-alphabets" class="slide level2">
 <h1>Source of reduced alphabets</h1>
 <p><img src="static_figure/feature_encoding.png"></p>
+</section><section id="properties-of-amino-acids" class="slide level2">
+<h1>Properties of amino acids</h1>
+<div id="htmlwidget-e2d444c0e6545fdb4b44" style="width:768px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e2d444c0e6545fdb4b44">{"x":{"data":[{"x":[0,-0.0499999960833314,0.487863466428829,0.425002363966087,0.450441767344315,0.5,0.524979807683434,0.536409600713513,0.547056998965921,0.533975767640803,0.507777085409604,0.491088741745376,0.526958704140382,0.450039196475537,0.549960803524463,0.477502904458017,0.456673676188693,0.476633546938726,1,0.950000003916669],"y":[0.173584905660377,0.177358490566038,0.230188679245283,0.0226415094339623,0.40377358490566,0,0.0264150943396226,0.230188679245283,0.837735849056604,0.577358490566038,0.445283018867925,0.762264150943396,0.735849056603774,0.0188679245283019,0.0188679245283019,1,0.709433962264151,0.49811320754717,0.226415094339623,0.433962264150943],"text":["charge: 0<br>hydroph: 0.17<br>aa: D","charge: -0.05<br>hydroph: 0.18<br>aa: E","charge: 0.49<br>hydroph: 0.23<br>aa: A","charge: 0.43<br>hydroph: 0.02<br>aa: N","charge: 0.45<br>hydroph: 0.4<br>aa: C","charge: 0.5<br>hydroph: 0<br>aa: Q","charge: 0.52<br>hydroph: 0.03<br>aa: G","charge: 0.54<br>hydroph: 0.23<br>aa: H","charge: 0.55<br>hydroph: 0.84<br>aa: I","charge: 0.53<br>hydroph: 0.58<br>aa: L","charge: 0.51<br>hydroph: 0.45<br>aa: M","charge: 0.49<br>hydroph: 0.76<br>aa: F","charge: 0.53<br>hydroph: 0.74<br>aa: P","charge: 0.45<br>hydroph: 0.02<br>aa: S","charge: 0.55<br>hydroph: 0.02<br>aa: T","charge: 0.48<br>hydroph: 1<br>aa: W","charge: 0.46<br>hydroph: 0.71<br>aa: Y","charge: 0.48<br>hydroph: 0.5<br>aa: V","charge: 1<br>hydroph: 0.23<br>aa: R","charge: 0.95<br>hydroph: 0.43<br>aa: K"],"key":null,"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":18.8976377952756,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","name":""}],"layout":{"margin":{"t":27.6742770167428,"r":7.30593607305936,"b":40.5659333056593,"l":48.1527604815276},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"transparent","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"type":"linear","autorange":false,"tickmode":"array","range":[-0.102499995887498,1.05249999980417],"ticktext":["0.00","0.25","0.50","0.75","1.00"],"tickvals":[0,0.25,0.5,0.75,1],"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.9551681195517},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(190,190,190,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":"Net charge (Klein et al., 1984)","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":13.2835201328352},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"type":"linear","autorange":false,"tickmode":"array","range":[-0.05,1.05],"ticktext":["0.00","0.25","0.50","0.75","1.00"],"tickvals":[0,0.25,0.5,0.75,1],"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.9551681195517},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(190,190,190,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":"Hydrophobicity (Argos et al., 1982)\n","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":13.2835201328352},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"transparent","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.9551681195517}},"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"modeBarButtonsToRemove":["sendDataToCloud"]},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":[]}</script>
+<p>All scale were normalized 0-1. Points are jittered over net charge.</p>
+</section><section id="properties-of-amino-acids-1" class="slide level2">
+<h1>Properties of amino acids</h1>
+<div id="htmlwidget-ad6e92867e707b95dcfc" style="width:768px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ad6e92867e707b95dcfc">{"x":{"data":[{"x":[0,-0.0499999960833314,0.487863466428829,0.425002363966087,0.5,0.524979807683434,0.536409600713513,0.450039196475537,0.549960803524463],"y":[0.173584905660377,0.177358490566038,0.230188679245283,0.0226415094339623,0,0.0264150943396226,0.230188679245283,0.0188679245283019,0.0188679245283019],"text":["charge: 0<br>hydroph: 0.17<br>aa: D<br>gr1: 1","charge: -0.05<br>hydroph: 0.18<br>aa: E<br>gr1: 1","charge: 0.49<br>hydroph: 0.23<br>aa: A<br>gr1: 1","charge: 0.43<br>hydroph: 0.02<br>aa: N<br>gr1: 1","charge: 0.5<br>hydroph: 0<br>aa: Q<br>gr1: 1","charge: 0.52<br>hydroph: 0.03<br>aa: G<br>gr1: 1","charge: 0.54<br>hydroph: 0.23<br>aa: H<br>gr1: 1","charge: 0.45<br>hydroph: 0.02<br>aa: S<br>gr1: 1","charge: 0.55<br>hydroph: 0.02<br>aa: T<br>gr1: 1"],"key":null,"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","opacity":1,"size":18.8976377952756,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(248,118,109,1)"}},"hoveron":"points","name":"1","legendgroup":"1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text"},{"x":[1,0.950000003916669],"y":[0.226415094339623,0.433962264150943],"text":["charge: 1<br>hydroph: 0.23<br>aa: R<br>gr1: 2","charge: 0.95<br>hydroph: 0.43<br>aa: K<br>gr1: 2"],"key":null,"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,186,56,1)","opacity":1,"size":18.8976377952756,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,186,56,1)"}},"hoveron":"points","name":"2","legendgroup":"2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text"},{"x":[0.450441767344315,0.547056998965921,0.533975767640803,0.507777085409604,0.491088741745376,0.526958704140382,0.477502904458017,0.456673676188693,0.476633546938726],"y":[0.40377358490566,0.837735849056604,0.577358490566038,0.445283018867925,0.762264150943396,0.735849056603774,1,0.709433962264151,0.49811320754717],"text":["charge: 0.45<br>hydroph: 0.4<br>aa: C<br>gr1: 3","charge: 0.55<br>hydroph: 0.84<br>aa: I<br>gr1: 3","charge: 0.53<br>hydroph: 0.58<br>aa: L<br>gr1: 3","charge: 0.51<br>hydroph: 0.45<br>aa: M<br>gr1: 3","charge: 0.49<br>hydroph: 0.76<br>aa: F<br>gr1: 3","charge: 0.53<br>hydroph: 0.74<br>aa: P<br>gr1: 3","charge: 0.48<br>hydroph: 1<br>aa: W<br>gr1: 3","charge: 0.46<br>hydroph: 0.71<br>aa: Y<br>gr1: 3","charge: 0.48<br>hydroph: 0.5<br>aa: V<br>gr1: 3"],"key":null,"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(97,156,255,1)","opacity":1,"size":18.8976377952756,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(97,156,255,1)"}},"hoveron":"points","name":"3","legendgroup":"3","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text"}],"layout":{"margin":{"t":27.6742770167428,"r":7.30593607305936,"b":40.5659333056593,"l":48.1527604815276},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"transparent","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"type":"linear","autorange":false,"tickmode":"array","range":[-0.102499995887498,1.05249999980417],"ticktext":["0.00","0.25","0.50","0.75","1.00"],"tickvals":[0,0.25,0.5,0.75,1],"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.9551681195517},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(190,190,190,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":"Net charge (Klein et al., 1984)","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":13.2835201328352},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"type":"linear","autorange":false,"tickmode":"array","range":[-0.05,1.05],"ticktext":["0.00","0.25","0.50","0.75","1.00"],"tickvals":[0,0.25,0.5,0.75,1],"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.9551681195517},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(190,190,190,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":"Hydrophobicity (Argos et al., 1982)\n","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":13.2835201328352},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"transparent","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.9551681195517},"y":0.940944881889764},"annotations":[{"text":"gr1","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":13.2835201328352},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"modeBarButtonsToRemove":["sendDataToCloud"]},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":[]}</script>
+<p>All scale were normalized 0-1. Points are jittered over net charge.</p>
+</section><section id="how-large-alphabet" class="slide level2">
+<h1>How large alphabet?</h1>
+<div id="htmlwidget-ca0638a25a0382bea6e4" style="width:768px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ca0638a25a0382bea6e4">{"x":{"data":[{"x":[0,-0.0499999960833314,0.487863466428829,0.425002363966087,0.5,0.524979807683434,0.536409600713513,0.450039196475537,0.549960803524463],"y":[0.173584905660377,0.177358490566038,0.230188679245283,0.0226415094339623,0,0.0264150943396226,0.230188679245283,0.0188679245283019,0.0188679245283019],"text":["charge: 0<br>hydroph: 0.17<br>aa: D<br>gr3: 1","charge: -0.05<br>hydroph: 0.18<br>aa: E<br>gr3: 1","charge: 0.49<br>hydroph: 0.23<br>aa: A<br>gr3: 1","charge: 0.43<br>hydroph: 0.02<br>aa: N<br>gr3: 1","charge: 0.5<br>hydroph: 0<br>aa: Q<br>gr3: 1","charge: 0.52<br>hydroph: 0.03<br>aa: G<br>gr3: 1","charge: 0.54<br>hydroph: 0.23<br>aa: H<br>gr3: 1","charge: 0.45<br>hydroph: 0.02<br>aa: S<br>gr3: 1","charge: 0.55<br>hydroph: 0.02<br>aa: T<br>gr3: 1"],"key":null,"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","opacity":1,"size":18.8976377952756,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(248,118,109,1)"}},"hoveron":"points","name":"1","legendgroup":"1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text"},{"x":[1,0.950000003916669],"y":[0.226415094339623,0.433962264150943],"text":["charge: 1<br>hydroph: 0.23<br>aa: R<br>gr3: 2","charge: 0.95<br>hydroph: 0.43<br>aa: K<br>gr3: 2"],"key":null,"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(124,174,0,1)","opacity":1,"size":18.8976377952756,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(124,174,0,1)"}},"hoveron":"points","name":"2","legendgroup":"2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text"},{"x":[0.450441767344315,0.533975767640803,0.507777085409604,0.476633546938726],"y":[0.40377358490566,0.577358490566038,0.445283018867925,0.49811320754717],"text":["charge: 0.45<br>hydroph: 0.4<br>aa: C<br>gr3: 3","charge: 0.53<br>hydroph: 0.58<br>aa: L<br>gr3: 3","charge: 0.51<br>hydroph: 0.45<br>aa: M<br>gr3: 3","charge: 0.48<br>hydroph: 0.5<br>aa: V<br>gr3: 3"],"key":null,"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,191,196,1)","opacity":1,"size":18.8976377952756,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,191,196,1)"}},"hoveron":"points","name":"3","legendgroup":"3","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text"},{"x":[0.547056998965921,0.491088741745376,0.526958704140382,0.477502904458017,0.456673676188693],"y":[0.837735849056604,0.762264150943396,0.735849056603774,1,0.709433962264151],"text":["charge: 0.55<br>hydroph: 0.84<br>aa: I<br>gr3: 4","charge: 0.49<br>hydroph: 0.76<br>aa: F<br>gr3: 4","charge: 0.53<br>hydroph: 0.74<br>aa: P<br>gr3: 4","charge: 0.48<br>hydroph: 1<br>aa: W<br>gr3: 4","charge: 0.46<br>hydroph: 0.71<br>aa: Y<br>gr3: 4"],"key":null,"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(199,124,255,1)","opacity":1,"size":18.8976377952756,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(199,124,255,1)"}},"hoveron":"points","name":"4","legendgroup":"4","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text"}],"layout":{"margin":{"t":27.6742770167428,"r":7.30593607305936,"b":40.5659333056593,"l":48.1527604815276},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"transparent","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"type":"linear","autorange":false,"tickmode":"array","range":[-0.102499995887498,1.05249999980417],"ticktext":["0.00","0.25","0.50","0.75","1.00"],"tickvals":[0,0.25,0.5,0.75,1],"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.9551681195517},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(190,190,190,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":"Net charge (Klein et al., 1984)","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":13.2835201328352},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"type":"linear","autorange":false,"tickmode":"array","range":[-0.05,1.05],"ticktext":["0.00","0.25","0.50","0.75","1.00"],"tickvals":[0,0.25,0.5,0.75,1],"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.9551681195517},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(190,190,190,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":"Hydrophobicity (Argos et al., 1982)\n","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":13.2835201328352},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"transparent","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.9551681195517},"y":0.940944881889764},"annotations":[{"text":"gr3","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":13.2835201328352},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"modeBarButtonsToRemove":["sendDataToCloud"]},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":[]}</script>
+<p>All scale were normalized 0-1. Points are jittered over net charge.</p>
+</section><section id="which-properties" class="slide level2">
+<h1>Which properties?</h1>
+<div id="htmlwidget-ca48fd7ce4000293f3cf" style="width:768px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ca48fd7ce4000293f3cf">{"x":{"data":[{"x":[0.478350741133649,0.458165269228697,0.453124512395891,0.492641399024465,0.538105596347958,0.523726290808104,0.549943870717102],"y":[0.7,0.777777777777778,1,0.922222222222222,0.711111111111111,0.811111111111111,0.966666666666667],"text":["charge: 0.48<br>hydroph2: 0.7<br>aa: A<br>gr2: 1","charge: 0.46<br>hydroph2: 0.78<br>aa: C<br>gr2: 1","charge: 0.45<br>hydroph2: 1<br>aa: I<br>gr2: 1","charge: 0.49<br>hydroph2: 0.92<br>aa: L<br>gr2: 1","charge: 0.54<br>hydroph2: 0.71<br>aa: M<br>gr2: 1","charge: 0.52<br>hydroph2: 0.81<br>aa: F<br>gr2: 1","charge: 0.55<br>hydroph2: 0.97<br>aa: V<br>gr2: 1"],"key":null,"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(248,118,109,1)","opacity":1,"size":18.8976377952756,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(248,118,109,1)"}},"hoveron":"points","name":"1","legendgroup":"1","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text"},{"x":[1,0.950000003916669],"y":[0,0.0666666666666667],"text":["charge: 1<br>hydroph2: 0<br>aa: R<br>gr2: 2","charge: 0.95<br>hydroph2: 0.07<br>aa: K<br>gr2: 2"],"key":null,"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,186,56,1)","opacity":1,"size":18.8976377952756,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(0,186,56,1)"}},"hoveron":"points","name":"2","legendgroup":"2","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text"},{"x":[0,-0.05,0.5,0.471658352701894,0.510185329642679,0.528267018642918,0.44424570966466,0.574120086647775,0.41573530505386,0.475014216289399,0.522722392348662],"y":[0.111111111111111,0.111111111111111,0.111111111111111,0.111111111111111,0.455555555555555,0.144444444444444,0.322222222222222,0.411111111111111,0.422222222222222,0.4,0.355555555555556],"text":["charge: 0<br>hydroph2: 0.11<br>aa: D<br>gr2: 3","charge: -0.05<br>hydroph2: 0.11<br>aa: E<br>gr2: 3","charge: 0.5<br>hydroph2: 0.11<br>aa: N<br>gr2: 3","charge: 0.47<br>hydroph2: 0.11<br>aa: Q<br>gr2: 3","charge: 0.51<br>hydroph2: 0.46<br>aa: G<br>gr2: 3","charge: 0.53<br>hydroph2: 0.14<br>aa: H<br>gr2: 3","charge: 0.44<br>hydroph2: 0.32<br>aa: P<br>gr2: 3","charge: 0.57<br>hydroph2: 0.41<br>aa: S<br>gr2: 3","charge: 0.42<br>hydroph2: 0.42<br>aa: T<br>gr2: 3","charge: 0.48<br>hydroph2: 0.4<br>aa: W<br>gr2: 3","charge: 0.52<br>hydroph2: 0.36<br>aa: Y<br>gr2: 3"],"key":null,"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(97,156,255,1)","opacity":1,"size":18.8976377952756,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(97,156,255,1)"}},"hoveron":"points","name":"3","legendgroup":"3","showlegend":true,"xaxis":"x","yaxis":"y","hoverinfo":"text"}],"layout":{"margin":{"t":27.6742770167428,"r":7.30593607305936,"b":40.5659333056593,"l":48.1527604815276},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"transparent","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"type":"linear","autorange":false,"tickmode":"array","range":[-0.1025,1.0525],"ticktext":["0.00","0.25","0.50","0.75","1.00"],"tickvals":[0,0.25,0.5,0.75,1],"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.9551681195517},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(190,190,190,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":"Net charge (Klein et al., 1984)","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":13.2835201328352},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"type":"linear","autorange":false,"tickmode":"array","range":[-0.05,1.05],"ticktext":["0.00","0.25","0.50","0.75","1.00"],"tickvals":[0,0.25,0.5,0.75,1],"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.9551681195517},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(190,190,190,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":"Hydropathy index (Kyte-Doolittle, 1982)\n","titlefont":{"color":"rgba(0,0,0,1)","family":"","size":13.2835201328352},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":true,"legend":{"bgcolor":"transparent","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.9551681195517},"y":0.940944881889764},"annotations":[{"text":"gr2","x":1.02,"y":1,"showarrow":false,"ax":0,"ay":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":13.2835201328352},"xref":"paper","yref":"paper","textangle":-0,"xanchor":"left","yanchor":"bottom","legendTitle":true}],"hovermode":"closest"},"source":"A","config":{"modeBarButtonsToAdd":[{"name":"Collaborate","icon":{"width":1000,"ascent":500,"descent":-50,"path":"M487 375c7-10 9-23 5-36l-79-259c-3-12-11-23-22-31-11-8-22-12-35-12l-263 0c-15 0-29 5-43 15-13 10-23 23-28 37-5 13-5 25-1 37 0 0 0 3 1 7 1 5 1 8 1 11 0 2 0 4-1 6 0 3-1 5-1 6 1 2 2 4 3 6 1 2 2 4 4 6 2 3 4 5 5 7 5 7 9 16 13 26 4 10 7 19 9 26 0 2 0 5 0 9-1 4-1 6 0 8 0 2 2 5 4 8 3 3 5 5 5 7 4 6 8 15 12 26 4 11 7 19 7 26 1 1 0 4 0 9-1 4-1 7 0 8 1 2 3 5 6 8 4 4 6 6 6 7 4 5 8 13 13 24 4 11 7 20 7 28 1 1 0 4 0 7-1 3-1 6-1 7 0 2 1 4 3 6 1 1 3 4 5 6 2 3 3 5 5 6 1 2 3 5 4 9 2 3 3 7 5 10 1 3 2 6 4 10 2 4 4 7 6 9 2 3 4 5 7 7 3 2 7 3 11 3 3 0 8 0 13-1l0-1c7 2 12 2 14 2l218 0c14 0 25-5 32-16 8-10 10-23 6-37l-79-259c-7-22-13-37-20-43-7-7-19-10-37-10l-248 0c-5 0-9-2-11-5-2-3-2-7 0-12 4-13 18-20 41-20l264 0c5 0 10 2 16 5 5 3 8 6 10 11l85 282c2 5 2 10 2 17 7-3 13-7 17-13z m-304 0c-1-3-1-5 0-7 1-1 3-2 6-2l174 0c2 0 4 1 7 2 2 2 4 4 5 7l6 18c0 3 0 5-1 7-1 1-3 2-6 2l-173 0c-3 0-5-1-8-2-2-2-4-4-4-7z m-24-73c-1-3-1-5 0-7 2-2 3-2 6-2l174 0c2 0 5 0 7 2 3 2 4 4 5 7l6 18c1 2 0 5-1 6-1 2-3 3-5 3l-174 0c-3 0-5-1-7-3-3-1-4-4-5-6z"},"click":"function(gd) { \n        // is this being viewed in RStudio?\n        if (location.search == '?viewer_pane=1') {\n          alert('To learn about plotly for collaboration, visit:\\n https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html');\n        } else {\n          window.open('https://cpsievert.github.io/plotly_book/plot-ly-for-collaboration.html', '_blank');\n        }\n      }"}],"modeBarButtonsToRemove":["sendDataToCloud"]},"base_url":"https://plot.ly"},"evals":["config.modeBarButtonsToAdd.0.click"],"jsHooks":[]}</script>
+<p>All scale were normalized 0-1. Points are jittered over net charge.</p>
+</section></section>
+<section><section id="results" class="titleslide slide level1"><h1>Results</h1></section><section id="our-model" class="slide level2">
+<h1>Our model</h1>
+<ul>
+<li class="fragment">We build a signal peptide predictor (based on hidden semi-Markov models) separately for each of 96 reduced alphabets.</li>
+<li class="fragment">We chose the best-performing reduced amino acid alphabet in cross-validation experiment using only non- eukaryotic sequences.</li>
+<li class="fragment">The resulting predictor in the benchmark had the best AUC not only for signal peptides of other eukaryotes, but also for  signal peptides.</li>
+</ul>
+</section><section id="performance" class="slide level2">
+<h1>Performance</h1>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;"></th>
+<th>MCC</th>
+<th>AUC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">signalP 4.1 (no tm) </td>
+<td>0.6872</td>
+<td>0.8667</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">signalP 4.1 (tm) </td>
+<td>0.6196</td>
+<td>0.7951</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">signalP 3.0 (NN) </td>
+<td>0.7220</td>
+<td>0.8938</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">signalP 3.0 (HMM) </td>
+<td>0.5553</td>
+<td>0.7734</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">PrediSi </td>
+<td>0.3849</td>
+<td>0.6453</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">Philius </td>
+<td>0.5684</td>
+<td>0.7707</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">Phobius </td>
+<td>0.5895</td>
+<td>0.7880</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">signalHsmm-2010</td>
+<td>0.7409</td>
+<td>0.9262</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">signalHsmm-2010 (hom. 50%)</td>
+<td><strong>0.7621</strong></td>
+<td><strong>0.9384</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">signalHsmm-2010 (raw aa)</td>
+<td>0.6853</td>
+<td>0.8718</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">signalHsmm-1987</td>
+<td>0.7271</td>
+<td>0.9063</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">signalHsmm-1987 (hom. 50%)</td>
+<td>0.7194</td>
+<td>0.9090</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">signalHsmm-1987 (raw aa)</td>
+<td>0.6350</td>
+<td>0.8350</td>
+</tr>
+</tbody>
+</table>
+<p>Benchmark data set:  proteins from UniProt data base (51 proteins with signal peptide and 211 proteins without signal peptide).</p>
+</section><section id="best-performing-reduced-amino-acid-alphabet" class="slide level2">
+<h1>Best-performing reduced amino acid alphabet</h1>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Group</th>
+<th style="text-align: left;">Amino acids</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">I</td>
+<td style="text-align: left;">D, E, H, K, N, Q, R</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">II</td>
+<td style="text-align: left;">G, P, S, T, Y</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">III</td>
+<td style="text-align: left;">F, I, L, M, V, W</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"> IV</td>
+<td style="text-align: left;">A, C</td>
+</tr>
+</tbody>
+</table>
+</section><section id="pca-of-amino-acid-composition" class="slide level2">
+<h1>PCA of amino acid composition</h1>
+<p><img src="presentation_files/figure-revealjs/unnamed-chunk-7-1.png" width="768" /></p>
+</section></section>
+<section><section id="summary" class="titleslide slide level1"><h1>Summary</h1></section><section id="challenges" class="slide level2">
+<h1>Challenges</h1>
+<ul>
+<li class="fragment">How to choose <strong>smartly</strong> the most optimal reduced amino acid alphabet?</li>
+<li class="fragment">How to reduce the homology of the training data set? Should one reduce the homology using sequences described in the full or a reduced amino acid alphabet?</li>
+</ul>
+</section><section id="proposed-framework" class="slide level2">
+<h1>Proposed framework</h1>
+<ul>
+<li class="fragment">Define which categories of physicochemical properties should be used to generate reduced amino acid alphabets.</li>
+<li class="fragment">Remove too colinear properties.</li>
+<li class="fragment">Define the minimum and maximum length of reduced amino acid alphabets.</li>
+<li class="fragment">Create reduced amino acid alphabets.</li>
+<li class="fragment">Choose non-redundant amino acid alphabets.</li>
+<li class="fragment">Perform cross-validation comparing reduced amino acid alphabets.</li>
+</ul>
+</section><section id="references" class="slide level2 unnumbered">
+<h1>References</h1>
+<div id="refs" class="references">
+<div id="ref-brbic_global_2015">
+<p>Brbić, Maria, Tobias Warnecke, Anita Kriško, and Fran Supek. 2015. “Global Shifts in Genome and Proteome Composition Are Very Tightly Coupled.” <em>Genome Biology and Evolution</em> 7 (6): 1519–32. doi:<a href="https://doi.org/10.1093/gbe/evv088">10.1093/gbe/evv088</a>.</p>
+</div>
+<div id="ref-maetschke_blomap:_2005">
+<p>Maetschke, Stefan, Michael Towsey, and Mikael Bodén. 2005. “BLOMAP: An Encoding of Amino Acids Which Improves Signal Peptide Cleavage Site Prediction.” In <em>In Chen Y., Wong L: Proc. 3 Rd AsiaPacific Bioinformatics Conference, Imperial</em>, 141–50. College Press.</p>
+</div>
+<div id="ref-von_heijne_patterns_1983">
+<p>von Heijne, Gunnar. 1983. “Patterns of Amino Acids Near Signal-Sequence Cleavage Sites.” <em>European Journal of Biochemistry</em> 133 (1): 17–21.</p>
+</div>
+</div>
 </section></section>
     </div>
   </div>
